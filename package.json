@@ -1,0 +1,18 @@
+{
+  "name": "sodium-secretstream",
+  "version": "0.0.0",
+  "description": "Wraps libsodiums secretstream in a higher level abstraction",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mafintosh/sodium-secretstream.git"
+  },
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafintosh/sodium-secretstream/issues"
+  },
+  "homepage": "https://github.com/mafintosh/sodium-secretstream"
+}
