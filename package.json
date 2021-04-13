@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Wraps libsodiums secretstream in a higher level abstraction",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "sodium-universal": "^3.0.4"
+  },
   "devDependencies": {},
   "repository": {
     "type": "git",

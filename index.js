@@ -1,4 +1,4 @@
-const sodium = require('sodium-native')
+const sodium = require('sodium-universal')
 
 const ABYTES = sodium.crypto_secretstream_xchacha20poly1305_ABYTES
 const TAG_MESSAGE = sodium.crypto_secretstream_xchacha20poly1305_TAG_MESSAGE
@@ -6,6 +6,8 @@ const TAG_FINAL = sodium.crypto_secretstream_xchacha20poly1305_TAG_FINAL
 const STATEBYTES = sodium.crypto_secretstream_xchacha20poly1305_STATEBYTES
 const HEADERBYTES = sodium.crypto_secretstream_xchacha20poly1305_HEADERBYTES
 const KEYBYTES = sodium.crypto_secretstream_xchacha20poly1305_KEYBYTES
+
+if (!TAG_FINAL) throw new Error('JavaScript sodium version needs to support crypto_secretstream_xchacha20poly')
 
 const FINAL = TAG_FINAL[0]
 const EMPTY = Buffer.alloc(0)
