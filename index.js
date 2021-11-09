@@ -1,4 +1,5 @@
 const sodium = require('sodium-universal')
+const b4a = require('b4a')
 
 const ABYTES = sodium.crypto_secretstream_xchacha20poly1305_ABYTES
 const TAG_MESSAGE = sodium.crypto_secretstream_xchacha20poly1305_TAG_MESSAGE
@@ -10,11 +11,11 @@ const KEYBYTES = sodium.crypto_secretstream_xchacha20poly1305_KEYBYTES
 if (!TAG_FINAL) throw new Error('JavaScript sodium version needs to support crypto_secretstream_xchacha20poly')
 
 const FINAL = TAG_FINAL[0]
-const EMPTY = Buffer.alloc(0)
-const TMP = Buffer.alloc(1)
+const EMPTY = b4a.alloc(0)
+const TMP = b4a.alloc(1)
 
 class Push {
-  constructor (key, state = Buffer.allocUnsafe(STATEBYTES), header = Buffer.allocUnsafe(HEADERBYTES)) {
+  constructor (key, state = b4a.allocUnsafe(STATEBYTES), header = b4a.allocUnsafe(HEADERBYTES)) {
     this.key = key
     this.state = state
     this.header = header
@@ -22,21 +23,21 @@ class Push {
     sodium.crypto_secretstream_xchacha20poly1305_init_push(this.state, this.header, this.key)
   }
 
-  next (message, cipher = Buffer.allocUnsafe(message.length + ABYTES)) {
+  next (message, cipher = b4a.allocUnsafe(message.byteLength + ABYTES)) {
     sodium.crypto_secretstream_xchacha20poly1305_push(this.state, cipher, message, null, TAG_MESSAGE)
     return cipher
   }
 
-  final (message = EMPTY, cipher = Buffer.allocUnsafe(ABYTES)) {
+  final (message = EMPTY, cipher = b4a.allocUnsafe(ABYTES)) {
     sodium.crypto_secretstream_xchacha20poly1305_push(this.state, cipher, message, null, TAG_FINAL)
     return cipher
   }
 }
 
 class Pull {
-  constructor (key, state = Buffer.allocUnsafe(STATEBYTES)) {
+  constructor (key, state = b4a.allocUnsafe(STATEBYTES)) {
     this.key = key
-    this.state = Buffer.allocUnsafe(STATEBYTES)
+    this.state = state
     this.final = false
   }
 
@@ -44,14 +45,14 @@ class Pull {
     sodium.crypto_secretstream_xchacha20poly1305_init_pull(this.state, header, this.key)
   }
 
-  next (cipher, message = Buffer.allocUnsafe(cipher.length - ABYTES)) {
+  next (cipher, message = b4a.allocUnsafe(cipher.byteLength - ABYTES)) {
     sodium.crypto_secretstream_xchacha20poly1305_pull(this.state, message, TMP, cipher, null)
     this.final = TMP[0] === FINAL
     return message
   }
 }
 
-function keygen (buf = Buffer.alloc(KEYBYTES)) {
+function keygen (buf = b4a.alloc(KEYBYTES)) {
   sodium.crypto_secretstream_xchacha20poly1305_keygen(buf)
   return buf
 }
