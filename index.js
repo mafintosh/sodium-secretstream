@@ -8,11 +8,8 @@ const STATEBYTES = sodium.crypto_secretstream_xchacha20poly1305_STATEBYTES
 const HEADERBYTES = sodium.crypto_secretstream_xchacha20poly1305_HEADERBYTES
 const KEYBYTES = sodium.crypto_secretstream_xchacha20poly1305_KEYBYTES
 
-if (!TAG_FINAL) throw new Error('JavaScript sodium version needs to support crypto_secretstream_xchacha20poly')
-
-const FINAL = TAG_FINAL[0]
 const EMPTY = b4a.alloc(0)
-const TMP = b4a.alloc(1)
+const TAG = b4a.alloc(1)
 
 class Push {
   constructor (key, state = b4a.allocUnsafe(STATEBYTES), header = b4a.allocUnsafe(HEADERBYTES)) {
@@ -46,8 +43,8 @@ class Pull {
   }
 
   next (cipher, message = b4a.allocUnsafe(cipher.byteLength - ABYTES)) {
-    sodium.crypto_secretstream_xchacha20poly1305_pull(this.state, message, TMP, cipher, null)
-    this.final = TMP[0] === FINAL
+    sodium.crypto_secretstream_xchacha20poly1305_pull(this.state, message, TAG, cipher, null)
+    this.final = b4a.equals(TAG, TAG_FINAL)
     return message
   }
 }
