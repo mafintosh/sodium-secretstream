@@ -48,7 +48,7 @@ class Pull {
 
   next (cipher, message = b4a.allocUnsafe(cipher.byteLength - ABYTES)) {
     sodium.crypto_secretstream_xchacha20poly1305_pull(this.state, message, TAG, cipher, null)
-    this.final = b4a.equals(TAG, TAG_FINAL)
+    this.final = TAG[0] === TAG_FINAL
     return message
   }
 }
