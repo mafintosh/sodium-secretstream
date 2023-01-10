@@ -7,6 +7,7 @@ const TAG_FINAL = sodium.crypto_secretstream_xchacha20poly1305_TAG_FINAL
 const STATEBYTES = sodium.crypto_secretstream_xchacha20poly1305_STATEBYTES
 const HEADERBYTES = sodium.crypto_secretstream_xchacha20poly1305_HEADERBYTES
 const KEYBYTES = sodium.crypto_secretstream_xchacha20poly1305_KEYBYTES
+const TAG_FINAL_BYTE = b4a.isBuffer(TAG_FINAL) ? TAG_FINAL[0] : TAG_FINAL
 
 const EMPTY = b4a.alloc(0)
 const TAG = b4a.alloc(1)
@@ -48,7 +49,7 @@ class Pull {
 
   next (cipher, message = b4a.allocUnsafe(cipher.byteLength - ABYTES)) {
     sodium.crypto_secretstream_xchacha20poly1305_pull(this.state, message, TAG, cipher, null)
-    this.final = TAG[0] === TAG_FINAL
+    this.final = TAG[0] === TAG_FINAL_BYTE
     return message
   }
 }
