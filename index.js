@@ -13,7 +13,7 @@ const EMPTY = b4a.alloc(0)
 const TAG = b4a.alloc(1)
 
 class Push {
-  constructor (key, state = b4a.allocUnsafe(STATEBYTES), header = b4a.allocUnsafe(HEADERBYTES)) {
+  constructor (key, state = b4a.allocUnsafeSlow(STATEBYTES), header = b4a.allocUnsafeSlow(HEADERBYTES)) {
     if (!TAG_FINAL) throw new Error('JavaScript sodium version needs to support crypto_secretstream_xchacha20poly')
 
     this.key = key
@@ -35,7 +35,7 @@ class Push {
 }
 
 class Pull {
-  constructor (key, state = b4a.allocUnsafe(STATEBYTES)) {
+  constructor (key, state = b4a.allocUnsafeSlow(STATEBYTES)) {
     if (!TAG_FINAL) throw new Error('JavaScript sodium version needs to support crypto_secretstream_xchacha20poly')
 
     this.key = key
