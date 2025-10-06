@@ -8,7 +8,7 @@ npm install sodium-secretstream
 
 ## Usage
 
-``` js
+```js
 const { Pull, Push, keygen } = require('sodium-secretstream')
 
 const key = keygen()
