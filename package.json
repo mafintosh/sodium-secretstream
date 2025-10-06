@@ -9,8 +9,7 @@
   },
   "scripts": {
     "format": "prettier --write .",
-    "lint": "prettier --check .",
-    "test": "echo 'No tests specified'"
+    "test": "prettier --check ."
   },
   "repository": {
     "type": "git",
